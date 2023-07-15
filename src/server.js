@@ -5,11 +5,12 @@ const dotenv_1 = require("dotenv");
 const express_1 = tslib_1.__importDefault(require("express"));
 const DataSource_1 = tslib_1.__importDefault(require("./Database/DataSource"));
 const train_routes_1 = require("./Routes/train.routes");
-const cors_1 = tslib_1.__importDefault(require("cors"));
+const path_1 = tslib_1.__importDefault(require("path"));
 (0, dotenv_1.config)();
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 5000;
 const allowedOrigins = process.env.ALLOWED_HOSTS;
+console.log(allowedOrigins);
 const startServer = async () => {
     try {
         console.log("Connecting to database....");
@@ -23,13 +24,14 @@ const startServer = async () => {
         console.log("Unable to connect to database", error);
     }
 };
-app.use((0, cors_1.default)({
-    origin: allowedOrigins,
-}));
+app.use(express_1.default.static(__dirname + "/../build"));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 startServer();
 app.use("/train", train_routes_1.trainRoutes);
+app.get("/*", function (req, res) {
+    res.sendFile(path_1.default.resolve(__dirname, "../build", "index.html"));
+});
 // app.get("/seedSeats", async (req: Request, res: Response) => {
 //   const trainRepo = appDataSource.getRepository(TrainEntity);
 //   const seatsRepo = appDataSource.getRepository(SeatsEntity);
