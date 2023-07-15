@@ -22,11 +22,7 @@ const startServer = async () => {
     console.log("Unable to connect to database", error);
   }
 };
-app.use(
-  cors({
-    origin: allowedOrigins,
-  })
-);
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 startServer();
