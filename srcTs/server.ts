@@ -2,13 +2,14 @@ import { config } from "dotenv";
 import express, { Application } from "express";
 import appDataSource from "./Database/DataSource";
 import { trainRoutes } from "./Routes/train.routes";
-import cors from "cors";
+import path from "path";
 
 config();
 
 const app: Application = express();
 const PORT = process.env.PORT || 5000;
 const allowedOrigins = process.env.ALLOWED_HOSTS;
+console.log(allowedOrigins);
 
 const startServer = async () => {
   try {
@@ -22,16 +23,16 @@ const startServer = async () => {
     console.log("Unable to connect to database", error);
   }
 };
-app.use(
-  cors({
-    origin: allowedOrigins,
-  })
-);
+app.use(express.static(__dirname + "/../build"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 startServer();
 
 app.use("/train", trainRoutes);
+
+app.get("/*", function (req, res) {
+  res.sendFile(path.resolve(__dirname, "../build", "index.html"));
+});
 
 // app.get("/seedSeats", async (req: Request, res: Response) => {
 //   const trainRepo = appDataSource.getRepository(TrainEntity);

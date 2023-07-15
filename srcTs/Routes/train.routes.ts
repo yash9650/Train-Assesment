@@ -5,5 +5,5 @@ const router = express.Router();
 
 router.get("/all", TrainController.getTrains);
 router.post("/book-seats", TrainController.bookSeats);
-router.get("/seats", TrainController.getSeats);
+router.get("/reset-seats", TrainController.resetSeats);
 export const trainRoutes = router;

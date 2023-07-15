@@ -3,6 +3,7 @@ import { errorResponse, successResponse } from "../Utils/request.utils";
 import { TrainService } from "../Services/train.service";
 import { SeatsEntity } from "../Database/Entities/seats.entity";
 import appDataSource from "../Database/DataSource";
+import { TrainEntity } from "../Database/Entities/train.entity";
 
 export class TrainController {
   static async getTrains(req: Request, res: Response) {
@@ -30,26 +31,24 @@ export class TrainController {
     }
   }
 
-  static async getSeats(req: Request, res: Response) {
+  static async resetSeats(req: Request, res: Response) {
     try {
       const seatRepo = appDataSource.getRepository(SeatsEntity);
-      //   const seats = await seatRepo.update(
-      //     {
-      //       isBooked: true,
-      //     },
-      //     {
-      //       isAvailable: true,
-      //       isBooked: false,
-      //     }
-      //   );
-
-      const seats = await seatRepo.count({
-        where: {
+      const trainRepo = appDataSource.getRepository(TrainEntity);
+      await seatRepo.update(
+        {},
+        {
           isAvailable: true,
           isBooked: false,
-        },
-      });
-      return successResponse(res, seats);
+        }
+      );
+      await trainRepo.update(
+        {},
+        {
+          seatsAvailableCount: 80,
+        }
+      );
+      return successResponse(res, "Seats reset successfully");
     } catch (error) {
       return errorResponse(res, error.message);
     }
