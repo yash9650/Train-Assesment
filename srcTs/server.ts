@@ -9,6 +9,7 @@ config();
 const app: Application = express();
 const PORT = process.env.PORT || 5000;
 const allowedOrigins = process.env.ALLOWED_HOSTS;
+console.log(allowedOrigins);
 
 const startServer = async () => {
   try {
