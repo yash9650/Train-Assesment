@@ -9,6 +9,7 @@ const cors_1 = tslib_1.__importDefault(require("cors"));
 (0, dotenv_1.config)();
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 5000;
+const allowedOrigins = process.env.ALLOWED_HOSTS;
 const startServer = async () => {
     try {
         console.log("Connecting to database....");
@@ -23,7 +24,7 @@ const startServer = async () => {
     }
 };
 app.use((0, cors_1.default)({
-    origin: "http://localhost:3000",
+    origin: allowedOrigins,
 }));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
