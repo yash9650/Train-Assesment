@@ -8,6 +8,7 @@ config();
 
 const app: Application = express();
 const PORT = process.env.PORT || 5000;
+const allowedOrigins = process.env.ALLOWED_HOSTS;
 
 const startServer = async () => {
   try {
@@ -23,7 +24,7 @@ const startServer = async () => {
 };
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: allowedOrigins,
   })
 );
 app.use(express.json());
