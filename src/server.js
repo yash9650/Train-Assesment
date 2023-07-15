@@ -1,47 +1,42 @@
-import { config } from "dotenv";
-import express, { Application } from "express";
-import appDataSource from "./Database/DataSource";
-import { trainRoutes } from "./Routes/train.routes";
-import cors from "cors";
-
-config();
-
-const app: Application = express();
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
+const dotenv_1 = require("dotenv");
+const express_1 = tslib_1.__importDefault(require("express"));
+const DataSource_1 = tslib_1.__importDefault(require("./Database/DataSource"));
+const train_routes_1 = require("./Routes/train.routes");
+const cors_1 = tslib_1.__importDefault(require("cors"));
+(0, dotenv_1.config)();
+const app = (0, express_1.default)();
 const PORT = process.env.PORT || 5000;
-
 const startServer = async () => {
-  try {
-    console.log("Connecting to database....");
-    await appDataSource.initialize();
-    console.log("Database connected");
-    app.listen(PORT, () => {
-      console.log(`listening on http://localhost:${PORT}`);
-    });
-  } catch (error) {
-    console.log("Unable to connect to database", error);
-  }
+    try {
+        console.log("Connecting to database....");
+        await DataSource_1.default.initialize();
+        console.log("Database connected");
+        app.listen(PORT, () => {
+            console.log(`listening on http://localhost:${PORT}`);
+        });
+    }
+    catch (error) {
+        console.log("Unable to connect to database", error);
+    }
 };
-app.use(
-  cors({
+app.use((0, cors_1.default)({
     origin: "http://localhost:3000",
-  })
-);
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+}));
+app.use(express_1.default.json());
+app.use(express_1.default.urlencoded({ extended: true }));
 startServer();
-
-app.use("/train", trainRoutes);
-
+app.use("/train", train_routes_1.trainRoutes);
 // app.get("/seedSeats", async (req: Request, res: Response) => {
 //   const trainRepo = appDataSource.getRepository(TrainEntity);
 //   const seatsRepo = appDataSource.getRepository(SeatsEntity);
-
 //   const train = await trainRepo.findOne({
 //     where: {
 //       id: 1,
 //     },
 //   });
-
 //   try {
 //     for (let index = 0; index < 70; index++) {
 //       const seat = new SeatsEntity();
@@ -58,7 +53,6 @@ app.use("/train", trainRoutes);
 //   const seats = await seatsRepo.find();
 //   res.send(seats);
 // });
-
 // app.get("/drop", async (req: Request, res: Response) => {
 //   try {
 //     await dropTable();
@@ -68,7 +62,6 @@ app.use("/train", trainRoutes);
 //     res.send("Unable to drop table");
 //   }
 // });
-
 // const createTable = async () => {
 //   try {
 //     await appDataSource.transaction(async (txn) => {
@@ -85,7 +78,6 @@ app.use("/train", trainRoutes);
 //         train.seatsBookedCount = 0;
 //         train.waitingCount = 0;
 //         const savedTrain = await trainRepo.save(train);
-
 //         for (let index = 0; index < 70; index++) {
 //           const seat = new SeatsEntity();
 //           seat.seatNumber = index + 1;
@@ -103,3 +95,4 @@ app.use("/train", trainRoutes);
 //     console.log("Unable to create table", error);
 //   }
 // };
+//# sourceMappingURL=server.js.map
